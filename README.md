@@ -1,7 +1,5 @@
 # ReqGuard: ИИ-агент проверки требований
 
-[![tests](https://github.com/ErsultanN/req-agent/actions/workflows/tests.yml/badge.svg)](https://github.com/ErsultanN/req-agent/actions/workflows/tests.yml)
-
 Агент проводит **статическое ревью документа требований до разработки** по
 ISO/IEC/IEEE 29148:2018 (п. 5.2.5 и 5.2.6) и IEEE Std 830-1998 (п. 4.3).
 Он нарезает документ на требования, проверяет каждое требование и весь набор,
@@ -157,5 +155,4 @@ eval/           эталон и скрипт оценки полноты
 samples/        документ кейса (MD)
 reports/        отчёты прогонов
 docs/           архитектура и измерения
-.github/        CI: тесты на каждый push
 ```
