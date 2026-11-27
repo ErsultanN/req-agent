@@ -105,12 +105,18 @@ def render(res: RunResult, llm=None) -> str:
     w(f"| Модель | `{res.model}`" + (f" (temperature = {temp:g})" if temp is not None else "") + " |")
     w(f"| Версия агента | `{agent_version()}` |")
     dur = res.finished - res.started
-    if llm_stats:
+    replay = bool(llm_stats) and llm_stats.calls == 0 and llm_stats.cached > 0
+    if replay:
+        w(f"| Режим | **Воспроизведение из кэша**: все {llm_stats.cached} ответов модели взяты из `.cache/` "
+          f"исходного прогона; новых запросов к API — 0. Тот же документ, код и кэш дают тот же отчёт. |")
+    elif llm_stats:
         tin = f"{llm_stats.input_tokens:,}".replace(",", " ")
         tout = f"{llm_stats.output_tokens:,}".replace(",", " ")
         w(f"| Обращений к модели | {llm_stats.calls} (+{llm_stats.cached} из кэша), токены: вход {tin}, выход {tout} |")
-    w(f"| Длительность | {dur:.0f} с |")
-    w(f"| Этапы | " + "; ".join(f"{k} — {v} с" for k, v in res.stage_times.items()) + " |\n")
+    w(f"| Длительность | {dur:.0f} с" + (" (без обращений к модели)" if replay else "") + " |")
+    if not replay:
+        w(f"| Этапы | " + "; ".join(f"{k} — {v} с" for k, v in res.stage_times.items()) + " |")
+    w("")
 
     # ---------------- кратко ----------------
     w("### Кратко\n")
