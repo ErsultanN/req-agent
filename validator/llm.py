@@ -51,7 +51,7 @@ class LLMClient:
             self.cache_dir.mkdir(parents=True, exist_ok=True)
         self.stats = LLMStats()
         self._last_call = 0.0
-        self._check_key()
+        # ключ проверяется только перед реальным запросом: прогон из кэша работает без ключа
 
     @property
     def label(self) -> str:
@@ -67,6 +67,7 @@ class LLMClient:
             self.stats.log.append({"stage": stage, "cached": True})
             return json.loads(cpath.read_text("utf-8"))
 
+        self._check_key()
         last_err = None
         attempts = int(os.getenv("LLM_RETRIES", "8"))
         for attempt in range(attempts):
