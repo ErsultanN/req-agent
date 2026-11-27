@@ -9,6 +9,20 @@ ISO/IEC/IEEE 29148:2018 (п. 5.2.5 и 5.2.6) и IEEE Std 830-1998 (п. 4.3).
 
 Подробно об устройстве агента и о проведённых измерениях: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
+## Для жюри: воспроизведение прогона (без ключа API)
+
+В репозитории лежит кэш ответов модели исходного прогона (`.cache/`, 9 файлов). Поэтому команда ниже
+**без ключа и без сети к LLM** пересобирает отчёт, совпадающий с `reports/report.md` по содержанию
+(отличаются только дата прогона и версия агента в паспорте):
+
+```bash
+git clone https://github.com/ErsultanN/req-agent && cd req-agent
+pip install -r requirements.txt
+python -m validator samples/requirements.md reports/report.md
+```
+
+Новый прогон с живой моделью: задайте `GEMINI_API_KEY` (см. ниже) и добавьте `--no-cache`.
+
 ## Быстрый старт
 
 ```bash
